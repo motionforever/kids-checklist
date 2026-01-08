@@ -540,25 +540,42 @@
       return t;
     }
 
-    function taskId(kid, section, idx){
-      return `${kid}.${section}.${idx}`;
+    function taskId(kid, section, task){
+      const name = (task.name || "").trim();
+      const time = (task.time || "").trim();
+      const note = (task.note || "").trim();
+
+      // Stable as long as name/time/note stay the same
+      return `${kid}.${section}.${name}__${time}__${note}`.toLowerCase();
     }
+
 
     function getChecksForToday(kid){
       const t = ensureTodayInitialized();
       return state.daily[t][kid].checks;
     }
 
-    function setChecked(kid, section, idx, checked){
+    // function setChecked(kid, section, idx, checked){
+    //   const checks = getChecksForToday(kid);
+    //   checks[taskId(kid, section, idx)] = !!checked;
+    //   saveState();
+    // }
+
+    // function isChecked(kid, section, idx){
+    //   const checks = getChecksForToday(kid);
+    //   return !!checks[taskId(kid, section, idx)];
+    // }
+    function setChecked(kid, section, task, checked){
       const checks = getChecksForToday(kid);
-      checks[taskId(kid, section, idx)] = !!checked;
+      checks[taskId(kid, section, task)] = !!checked;
       saveState();
     }
 
-    function isChecked(kid, section, idx){
+    function isChecked(kid, section, task){
       const checks = getChecksForToday(kid);
-      return !!checks[taskId(kid, section, idx)];
+      return !!checks[taskId(kid, section, task)];
     }
+
 
     function clearToday(kid){
       const t = ensureTodayInitialized();
@@ -640,14 +657,26 @@
       req.innerHTML = "";
       bonus.innerHTML = "";
 
-      const tasks = state.tasks[activeKid];
+      const base = state.tasks[activeKid];
 
-      tasks.required.forEach((t, i)=>{
-        req.appendChild(taskRow(activeKid, "required", i, t));
-      });
-      tasks.bonus.forEach((t, i)=>{
-        bonus.appendChild(taskRow(activeKid, "bonus", i, t));
-      });
+      const weekdayKeys = ["sun","mon","tue","wed","thu","fri","sat"];
+      const dow = weekdayKeys[new Date().getDay()];
+      const add = (base.weekly && base.weekly[dow]) ? base.weekly[dow] : { required: [], bonus: [] };
+
+      const tasks = {
+        required: [...(base.required || []), ...(add.required || [])],
+        bonus:    [...(base.bonus || []),    ...(add.bonus || [])]
+      };
+
+      tasks.required.forEach((t)=> req.appendChild(taskRow(activeKid, "required", t)));
+      tasks.bonus.forEach((t)=> bonus.appendChild(taskRow(activeKid, "bonus", t)));
+
+      // tasks.required.forEach((t, i)=>{
+      //   req.appendChild(taskRow(activeKid, "required", i, t));
+      // });
+      // tasks.bonus.forEach((t, i)=>{
+      //   bonus.appendChild(taskRow(activeKid, "bonus", i, t));
+      // });
 
       // stats
       const st = computeStats(activeKid);
@@ -681,56 +710,57 @@
       }
     }
 
-function taskRow(kid, section, idx, task){
-  const wrap = document.createElement("label");   // <-- label makes row clickable
-  wrap.className = "item";
-  wrap.style.cursor = "pointer";
+  function taskRow(kid, section, task){
+    const wrap = document.createElement("label");   // <-- label makes row clickable
+    wrap.className = "item";
+    wrap.style.cursor = "pointer";
 
-  const cb = document.createElement("input");
-  cb.type = "checkbox";
-  cb.checked = isChecked(kid, section, idx);
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = isChecked(kid, section, task);
 
-  cb.addEventListener("change", ()=>{
-    setChecked(kid, section, idx, cb.checked);
-    render();
-  });
+    cb.addEventListener("change", ()=>{
+      setChecked(kid, section, task, cb.checked);
+      render();
+    });
 
-  const label = document.createElement("div");
-  label.className = "label";
 
-  const p = document.createElement("p");
-  p.className = "name";
-  p.textContent = task.name || "(Unnamed task)";
+    const label = document.createElement("div");
+    label.className = "label";
 
-  const meta = document.createElement("div");
-  meta.className = "meta";
+    const p = document.createElement("p");
+    p.className = "name";
+    p.textContent = task.name || "(Unnamed task)";
 
-  const tag = document.createElement("span");
-  tag.className = "tag " + (section === "required" ? "req" : "bonus");
-  tag.textContent = section === "required" ? "Required" : "Bonus";
-  meta.appendChild(tag);
+    const meta = document.createElement("div");
+    meta.className = "meta";
 
-  if(task.time){
-    const time = document.createElement("span");
-    time.className = "tag time";
-    time.textContent = task.time;
-    meta.appendChild(time);
+    const tag = document.createElement("span");
+    tag.className = "tag " + (section === "required" ? "req" : "bonus");
+    tag.textContent = section === "required" ? "Required" : "Bonus";
+    meta.appendChild(tag);
+
+    if(task.time){
+      const time = document.createElement("span");
+      time.className = "tag time";
+      time.textContent = task.time;
+      meta.appendChild(time);
+    }
+
+    if(task.note){
+      const note = document.createElement("span");
+      note.className = "tag";
+      note.textContent = task.note;
+      meta.appendChild(note);
+    }
+
+    label.appendChild(p);
+    label.appendChild(meta);
+
+    wrap.appendChild(cb);
+    wrap.appendChild(label);
+    return wrap;
   }
-
-  if(task.note){
-    const note = document.createElement("span");
-    note.className = "tag";
-    note.textContent = task.note;
-    meta.appendChild(note);
-  }
-
-  label.appendChild(p);
-  label.appendChild(meta);
-
-  wrap.appendChild(cb);
-  wrap.appendChild(label);
-  return wrap;
-}
 
 
     // --------- UI wiring ----------
