@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aria & Darren — Daily Checklist</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --card2:#0f1730;
+      --text:#e9eefc;
+      --muted:#a9b4d6;
+      --line:#233152;
+      --ok:#2dd4bf;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --btn:#1b2a4b;
+      --btn2:#23365f;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 700px at 20% 0%, #1a2a55 0%, var(--bg) 60%) fixed;
+      color:var(--text);
+    }
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 18px 60px;
+    }
+    header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    h1{
+      font-size: 22px;
+      margin:0 0 6px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size: 13px;
+      margin:0;
+      line-height:1.35;
+    }
+    .pillrow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top:2px;
+    }
+    .pill{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size:12px;
+      color: var(--muted);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      white-space:nowrap;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 12px;
+    }
+    .tabs{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .tabbtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor:pointer;
+      font-weight:600;
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    .tabbtn[aria-selected="true"]{
+      background: rgba(45,212,191,.18);
+      border-color: rgba(45,212,191,.45);
+      box-shadow: inset 0 0 0 1px rgba(45,212,191,.15);
+    }
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    button{
+      border:1px solid rgba(255,255,255,.14);
+      background: var(--btn);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 9px 11px;
+      cursor:pointer;
+      font-weight:600;
+      font-size: 13px;
+    }
+    button:hover{ background: var(--btn2); }
+    button.danger{
+      background: rgba(251,113,133,.16);
+      border-color: rgba(251,113,133,.35);
+    }
+    button.danger:hover{ background: rgba(251,113,133,.22); }
+    button.ghost{
+      background: rgba(255,255,255,.05);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin: 6px 0 10px;
+    }
+    .sectionTitle h2{
+      font-size: 15px;
+      margin:0;
+      color: var(--text);
+      letter-spacing:.2px;
+    }
+    .hint{
+      font-size:12px;
+      color: var(--muted);
+    }
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(17,26,46,.45);
+    }
+    .item:hover{
+      border-color: rgba(255,255,255,.18);
+      background: rgba(17,26,46,.60);
+    }
+    input[type="checkbox"]{
+      width:18px;
+      height:18px;
+      margin-top:2px;
+      accent-color: var(--ok);
+    }
+    .label{
+      flex:1;
+      min-width:0;
+    }
+    .label .name{
+      font-weight:700;
+      font-size: 14px;
+      margin:0;
+      line-height:1.2;
+    }
+    .label .meta{
+      margin-top:4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.35;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .tag{
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+    }
+    .tag.req{
+      color: #bff7ee;
+      border-color: rgba(45,212,191,.35);
+      background: rgba(45,212,191,.12);
+    }
+    .tag.bonus{
+      color: #ffe9b7;
+      border-color: rgba(251,191,36,.35);
+      background: rgba(251,191,36,.12);
+    }
+    .tag.time{
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .panel{
+      background: rgba(17,26,46,.45);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .statRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      flex:1;
+      min-width: 160px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .stat .k{
+      color: var(--muted);
+      font-size: 12px;
+      margin:0 0 6px;
+    }
+    .stat .v{
+      font-size: 20px;
+      margin:0;
+      font-weight: 900;
+      letter-spacing:.2px;
+    }
+    .progressWrap{
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .bar{
+      height: 10px;
+      background: rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(45,212,191,.95), rgba(96,165,250,.85));
+      border-radius:999px;
+    }
+    .small{
+      font-size: 12px;
+      color: var(--muted);
+      margin: 8px 0 0;
+      line-height:1.35;
+    }
+    dialog{
+      width:min(760px, calc(100% - 24px));
+      border:none;
+      border-radius: 18px;
+      padding:0;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+    }
+    dialog::backdrop{ background: rgba(0,0,0,.6); }
+    .modalHead{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .modalHead h3{ margin:0; font-size: 14px; letter-spacing:.2px;}
+    .modalBody{ padding: 14px 16px 16px; }
+    textarea{
+      width:100%;
+      min-height: 340px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--text);
+      background: rgba(10,16,30,.75);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding: 12px;
+      outline:none;
+    }
+    .modalFoot{
+      padding: 12px 16px 16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .note{
+      font-size:12px;
+      color: var(--muted);
+      margin: 10px 0 0;
+    }
+    .footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Daily Checklist — Aria & Darren</h1>
+        <p class="sub">
+          Check items, keep streaks, don’t argue with the internet (it wins).
+          Everything stays on this device unless you edit the file.
+        </p>
+      </div>
+      <div class="pillrow">
+        <div class="pill" id="todayPill">Today: —</div>
+        <div class="pill" id="resetPill">Auto-reset: —</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="topbar">
+        <div class="tabs" role="tablist" aria-label="Kids">
+          <button class="tabbtn" id="tab-aria" role="tab" aria-selected="true" aria-controls="panel">Aria</button>
+          <button class="tabbtn" id="tab-darren" role="tab" aria-selected="false" aria-controls="panel">Darren</button>
+        </div>
+        <div class="actions">
+          <button class="ghost" id="editBtn">Edit tasks</button>
+          <button class="danger" id="clearTodayBtn">Clear today</button>
+        </div>
+      </div>
+
+      <div class="grid" id="panel" role="tabpanel" aria-label="Checklist panel">
+        <div>
+          <div class="sectionTitle">
+            <h2>Required</h2>
+            <div class="hint">Streak counts only if all required are done.</div>
+          </div>
+          <div class="list" id="requiredList"></div>
+
+          <div class="sectionTitle" style="margin-top:14px;">
+            <h2>Bonus</h2>
+            <div class="hint">Nice-to-have. Bragging rights included.</div>
+          </div>
+          <div class="list" id="bonusList"></div>
+        </div>
+
+        <aside class="panel">
+          <div class="statRow">
+            <div class="stat">
+              <p class="k">Required done</p>
+              <p class="v" id="reqDone">0 / 0</p>
+            </div>
+            <div class="stat">
+              <p class="k">Total done</p>
+              <p class="v" id="allDone">0 / 0</p>
+            </div>
+          </div>
+
+          <div class="statRow" style="margin-top:10px;">
+            <div class="stat">
+              <p class="k">Current streak</p>
+              <p class="v" id="streak">0</p>
+            </div>
+            <div class="stat">
+              <p class="k">Best streak</p>
+              <p class="v" id="bestStreak">0</p>
+            </div>
+          </div>
+
+          <div class="progressWrap">
+            <div class="sectionTitle" style="margin:0 0 8px;">
+              <h2>Progress</h2>
+              <div class="hint" id="progressPct">0%</div>
+            </div>
+            <div class="bar"><div id="barFill"></div></div>
+            <p class="small" id="statusLine">—</p>
+            <p class="small" id="streakLine">—</p>
+          </div>
+
+          <p class="note">
+            Tip: “Edit tasks” is plain text. Keep it simple. One task per line.
+          </p>
+        </aside>
+      </div>
+    </div>
+
+    <div class="footer">
+      Stored locally in your browser (localStorage). If you open this on a different device, it won’t sync unless you add a real backend.
+    </div>
+  </div>
+
+  <dialog id="editor">
+    <div class="modalHead">
+      <h3>Edit tasks (JSON)</h3>
+      <button class="danger" id="closeEditor">Close</button>
+    </div>
+    <div class="modalBody">
+      <textarea id="tasksJson" spellcheck="false"></textarea>
+      <p class="note">
+        Safe edit strategy: change only the text inside quotes, keep commas/brackets.
+      </p>
+    </div>
+    <div class="modalFoot">
+      <button class="ghost" id="resetDefaults">Reset to defaults</button>
+      <button id="saveTasks">Save</button>
+    </div>
+  </dialog>
+
+  <script>
+    // --------- Defaults (edit here once, or via UI) ----------
+    const DEFAULTS = {
+      aria: {
+        required: [
+          { name: "Brush teeth (AM + PM)", note: "2 minutes", time: "AM/PM" },
+          { name: "Read", note: "15–20 minutes", time: "" },
+          { name: "Homework / review", note: "Finish & pack", time: "" },
+          { name: "Piano practice", note: "20 minutes", time: "" }
+        ],
+        bonus: [
+          { name: "Tidy room", note: "5-minute reset", time: "" },
+          { name: "Exercise", note: "10–20 minutes", time: "" },
+          { name: "Kindness mission", note: "Do 1 helpful thing", time: "" }
+        ]
+      },
+      darren: {
+        required: [
+          { name: "Brush teeth (AM + PM)", note: "2 minutes", time: "AM/PM" },
+          { name: "Math practice", note: "20–30 minutes", time: "" },
+          { name: "Homework / school prep", note: "Finish & pack", time: "" },
+          { name: "Read", note: "15–20 minutes", time: "" }
+        ],
+        bonus: [
+          { name: "Exercise", note: "Basketball / walk / stretch", time: "" },
+          { name: "Tidy desk", note: "5-minute reset", time: "" },
+          { name: "Plan tomorrow", note: "Top 3 tasks", time: "" }
+        ]
+      }
+    };
+
+    // --------- Storage keys ----------
+    const KEY = "kidsChecklist.v1";
+
+    // --------- State ----------
+    let state = loadState();
+    let activeKid = state.activeKid || "aria";
+
+    // --------- Helpers ----------
+    function todayKey() {
+      // local date key like 2026-01-07
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function nextResetText() {
+      const now = new Date();
+      const next = new Date(now);
+      next.setHours(24,0,0,0);
+      const hrs = Math.max(0, Math.round((next - now)/60000));
+      if (hrs < 60) return `in ${hrs} min`;
+      const h = Math.floor(hrs/60);
+      const min = hrs % 60;
+      return `in ${h}h ${min}m`;
+    }
+
+    function deepCopy(x){ return JSON.parse(JSON.stringify(x)); }
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        if(!raw){
+          return {
+            tasks: deepCopy(DEFAULTS),
+            activeKid: "aria",
+            daily: {},
+            streaks: {
+              aria: { current: 0, best: 0, lastCountedDay: null },
+              darren: { current: 0, best: 0, lastCountedDay: null }
+            }
+          };
+        }
+        const parsed = JSON.parse(raw);
+        // minimal migration safety
+        parsed.tasks ||= deepCopy(DEFAULTS);
+        parsed.daily ||= {};
+        parsed.streaks ||= {
+          aria: { current: 0, best: 0, lastCountedDay: null },
+          darren: { current: 0, best: 0, lastCountedDay: null }
+        };
+        return parsed;
+      }catch(e){
+        console.warn("Bad state, resetting:", e);
+        localStorage.removeItem(KEY);
+        return loadState();
+      }
+    }
+
+    function saveState(){
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+
+    function ensureTodayInitialized(){
+      const t = todayKey();
+      state.daily[t] ||= { aria: { checks: {} }, darren: { checks: {} } };
+      saveState();
+      return t;
+    }
+
+    function taskId(kid, section, idx){
+      return `${kid}.${section}.${idx}`;
+    }
+
+    function getChecksForToday(kid){
+      const t = ensureTodayInitialized();
+      return state.daily[t][kid].checks;
+    }
+
+    function setChecked(kid, section, idx, checked){
+      const checks = getChecksForToday(kid);
+      checks[taskId(kid, section, idx)] = !!checked;
+      saveState();
+    }
+
+    function isChecked(kid, section, idx){
+      const checks = getChecksForToday(kid);
+      return !!checks[taskId(kid, section, idx)];
+    }
+
+    function clearToday(kid){
+      const t = ensureTodayInitialized();
+      state.daily[t][kid].checks = {};
+      saveState();
+    }
+
+    function formatDatePill(){
+      const d = new Date();
+      const opts = { weekday:"long", year:"numeric", month:"short", day:"numeric" };
+      return d.toLocaleDateString(undefined, opts);
+    }
+
+    function computeStats(kid){
+      const tasks = state.tasks[kid];
+      const reqTotal = tasks.required.length;
+      const bonusTotal = tasks.bonus.length;
+      let reqDone = 0;
+      let bonusDone = 0;
+
+      tasks.required.forEach((_, i)=>{ if(isChecked(kid,"required",i)) reqDone++; });
+      tasks.bonus.forEach((_, i)=>{ if(isChecked(kid,"bonus",i)) bonusDone++; });
+
+      const allDone = reqDone + bonusDone;
+      const allTotal = reqTotal + bonusTotal;
+      const pct = allTotal ? Math.round((allDone / allTotal) * 100) : 0;
+
+      return { reqDone, reqTotal, bonusDone, bonusTotal, allDone, allTotal, pct };
+    }
+
+    function maybeUpdateStreakOnFullRequired(kid){
+      const t = todayKey();
+      const { reqDone, reqTotal } = computeStats(kid);
+      const s = state.streaks[kid];
+
+      // If no required tasks, streak doesn't really mean anything; treat as not countable.
+      if(reqTotal === 0) return;
+
+      const isComplete = reqDone === reqTotal;
+
+      // Count streak at most once per day.
+      if(isComplete && s.lastCountedDay !== t){
+        // Determine if yesterday was counted, to extend streak.
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const y = yesterday.getFullYear();
+        const m = String(yesterday.getMonth()+1).padStart(2,"0");
+        const d = String(yesterday.getDate()).padStart(2,"0");
+        const yKey = `${y}-${m}-${d}`;
+
+        if(s.lastCountedDay === yKey){
+          s.current += 1;
+        }else{
+          s.current = 1;
+        }
+        s.best = Math.max(s.best, s.current);
+        s.lastCountedDay = t;
+        saveState();
+      }
+
+      // If today isn't complete, don't auto-break the streak immediately—
+      // streak breaks naturally if you miss a day (i.e., tomorrow you won't extend).
+    }
+
+    function render(){
+      // day pills
+      document.getElementById("todayPill").textContent = `Today: ${formatDatePill()}`;
+      document.getElementById("resetPill").textContent = `Auto-reset: ${nextResetText()}`;
+
+      // tabs
+      const ariaTab = document.getElementById("tab-aria");
+      const darrenTab = document.getElementById("tab-darren");
+      ariaTab.setAttribute("aria-selected", activeKid === "aria");
+      darrenTab.setAttribute("aria-selected", activeKid === "darren");
+
+      // lists
+      const req = document.getElementById("requiredList");
+      const bonus = document.getElementById("bonusList");
+      req.innerHTML = "";
+      bonus.innerHTML = "";
+
+      const tasks = state.tasks[activeKid];
+
+      tasks.required.forEach((t, i)=>{
+        req.appendChild(taskRow(activeKid, "required", i, t));
+      });
+      tasks.bonus.forEach((t, i)=>{
+        bonus.appendChild(taskRow(activeKid, "bonus", i, t));
+      });
+
+      // stats
+      const st = computeStats(activeKid);
+      document.getElementById("reqDone").textContent = `${st.reqDone} / ${st.reqTotal}`;
+      document.getElementById("allDone").textContent = `${st.allDone} / ${st.allTotal}`;
+      document.getElementById("progressPct").textContent = `${st.pct}%`;
+      document.getElementById("barFill").style.width = `${st.pct}%`;
+
+      // streaks
+      maybeUpdateStreakOnFullRequired(activeKid);
+
+      const s = state.streaks[activeKid];
+      document.getElementById("streak").textContent = `${s.current}`;
+      document.getElementById("bestStreak").textContent = `${s.best}`;
+
+      // status lines
+      const statusLine = document.getElementById("statusLine");
+      if(st.reqTotal === 0){
+        statusLine.textContent = "No required tasks set. Add some in “Edit tasks”.";
+      }else if(st.reqDone === st.reqTotal){
+        statusLine.textContent = "Required complete. You may now bask in glory.";
+      }else{
+        statusLine.textContent = `Do required: ${st.reqTotal - st.reqDone} left.`;
+      }
+
+      const streakLine = document.getElementById("streakLine");
+      if(st.reqTotal === 0){
+        streakLine.textContent = "Streaks start once required tasks exist.";
+      }else{
+        streakLine.textContent = `Streak counts when all required are done (once per day).`;
+      }
+    }
+
+    function taskRow(kid, section, idx, task){
+      const wrap = document.createElement("div");
+      wrap.className = "item";
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = isChecked(kid, section, idx);
+      cb.addEventListener("change", ()=>{
+        setChecked(kid, section, idx, cb.checked);
+        render();
+      });
+
+      const label = document.createElement("div");
+      label.className = "label";
+
+      const p = document.createElement("p");
+      p.className = "name";
+      p.textContent = task.name || "(Unnamed task)";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const tag = document.createElement("span");
+      tag.className = "tag " + (section === "required" ? "req" : "bonus");
+      tag.textContent = section === "required" ? "Required" : "Bonus";
+
+      meta.appendChild(tag);
+
+      if(task.time){
+        const time = document.createElement("span");
+        time.className = "tag time";
+        time.textContent = task.time;
+        meta.appendChild(time);
+      }
+
+      if(task.note){
+        const note = document.createElement("span");
+        note.className = "tag";
+        note.textContent = task.note;
+        meta.appendChild(note);
+      }
+
+      label.appendChild(p);
+      label.appendChild(meta);
+
+      wrap.appendChild(cb);
+      wrap.appendChild(label);
+      return wrap;
+    }
+
+    // --------- UI wiring ----------
+    document.getElementById("tab-aria").addEventListener("click", ()=>{
+      activeKid = "aria";
+      state.activeKid = activeKid;
+      saveState();
+      render();
+    });
+    document.getElementById("tab-darren").addEventListener("click", ()=>{
+      activeKid = "darren";
+      state.activeKid = activeKid;
+      saveState();
+      render();
+    });
+
+    document.getElementById("clearTodayBtn").addEventListener("click", ()=>{
+      if(confirm(`Clear TODAY's checks for ${activeKid.toUpperCase()}?`)){
+        clearToday(activeKid);
+        render();
+      }
+    });
+
+    // Editor modal
+    const editor = document.getElementById("editor");
+    const tasksJson = document.getElementById("tasksJson");
+
+    document.getElementById("editBtn").addEventListener("click", ()=>{
+      tasksJson.value = JSON.stringify(state.tasks, null, 2);
+      editor.showModal();
+    });
+
+    document.getElementById("closeEditor").addEventListener("click", ()=>{
+      editor.close();
+    });
+
+    document.getElementById("resetDefaults").addEventListener("click", ()=>{
+      if(confirm("Reset tasks to defaults? (This won’t erase streaks, but today’s checkboxes may no longer match.)")){
+        state.tasks = deepCopy(DEFAULTS);
+        saveState();
+        tasksJson.value = JSON.stringify(state.tasks, null, 2);
+        render();
+      }
+    });
+
+    document.getElementById("saveTasks").addEventListener("click", ()=>{
+      try{
+        const parsed = JSON.parse(tasksJson.value);
+        // basic validation
+        ["aria","darren"].forEach(k=>{
+          if(!parsed[k] || !Array.isArray(parsed[k].required) || !Array.isArray(parsed[k].bonus)){
+            throw new Error(`Missing sections for "${k}". Must have required[] and bonus[].`);
+          }
+        });
+        state.tasks = parsed;
+        saveState();
+        editor.close();
+        render();
+      }catch(e){
+        alert("Invalid JSON:\n" + e.message);
+      }
+    });
+
+    // periodic update (reset pill + date rollover)
+    let lastDay = todayKey();
+    setInterval(()=>{
+      const nowDay = todayKey();
+      if(nowDay !== lastDay){
+        lastDay = nowDay;
+        // new day: initialize and render
+        ensureTodayInitialized();
+      }
+      // update countdown text + render stats
+      render();
+    }, 30 * 1000);
+
+    // init
+    ensureTodayInitialized();
+    render();
+  </script>
+</body>
+</html>
