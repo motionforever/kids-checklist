@@ -681,55 +681,57 @@
       }
     }
 
-    function taskRow(kid, section, idx, task){
-      const wrap = document.createElement("div");
-      wrap.className = "item";
+function taskRow(kid, section, idx, task){
+  const wrap = document.createElement("label");   // <-- label makes row clickable
+  wrap.className = "item";
+  wrap.style.cursor = "pointer";
 
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.checked = isChecked(kid, section, idx);
-      cb.addEventListener("change", ()=>{
-        setChecked(kid, section, idx, cb.checked);
-        render();
-      });
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = isChecked(kid, section, idx);
 
-      const label = document.createElement("div");
-      label.className = "label";
+  cb.addEventListener("change", ()=>{
+    setChecked(kid, section, idx, cb.checked);
+    render();
+  });
 
-      const p = document.createElement("p");
-      p.className = "name";
-      p.textContent = task.name || "(Unnamed task)";
+  const label = document.createElement("div");
+  label.className = "label";
 
-      const meta = document.createElement("div");
-      meta.className = "meta";
+  const p = document.createElement("p");
+  p.className = "name";
+  p.textContent = task.name || "(Unnamed task)";
 
-      const tag = document.createElement("span");
-      tag.className = "tag " + (section === "required" ? "req" : "bonus");
-      tag.textContent = section === "required" ? "Required" : "Bonus";
+  const meta = document.createElement("div");
+  meta.className = "meta";
 
-      meta.appendChild(tag);
+  const tag = document.createElement("span");
+  tag.className = "tag " + (section === "required" ? "req" : "bonus");
+  tag.textContent = section === "required" ? "Required" : "Bonus";
+  meta.appendChild(tag);
 
-      if(task.time){
-        const time = document.createElement("span");
-        time.className = "tag time";
-        time.textContent = task.time;
-        meta.appendChild(time);
-      }
+  if(task.time){
+    const time = document.createElement("span");
+    time.className = "tag time";
+    time.textContent = task.time;
+    meta.appendChild(time);
+  }
 
-      if(task.note){
-        const note = document.createElement("span");
-        note.className = "tag";
-        note.textContent = task.note;
-        meta.appendChild(note);
-      }
+  if(task.note){
+    const note = document.createElement("span");
+    note.className = "tag";
+    note.textContent = task.note;
+    meta.appendChild(note);
+  }
 
-      label.appendChild(p);
-      label.appendChild(meta);
+  label.appendChild(p);
+  label.appendChild(meta);
 
-      wrap.appendChild(cb);
-      wrap.appendChild(label);
-      return wrap;
-    }
+  wrap.appendChild(cb);
+  wrap.appendChild(label);
+  return wrap;
+}
+
 
     // --------- UI wiring ----------
     document.getElementById("tab-aria").addEventListener("click", ()=>{
