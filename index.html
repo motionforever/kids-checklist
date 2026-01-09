@@ -421,7 +421,7 @@
     </div>
   </div>
 
-  <dialog id="editor">
+  <!-- <dialog id="editor">
     <div class="modalHead">
       <h3>Edit tasks (JSON)</h3>
       <button class="danger" id="closeEditor">Close</button>
@@ -436,7 +436,7 @@
       <button class="ghost" id="resetDefaults">Reset to defaults</button>
       <button id="saveTasks">Save</button>
     </div>
-  </dialog>
+  </dialog> -->
 
   <script>
     // --------- Defaults (edit here once, or via UI) ----------
@@ -819,41 +819,42 @@
     const editor = document.getElementById("editor");
     const tasksJson = document.getElementById("tasksJson");
 
+    document.getElementById("editBtn").textContent = "Edit tasks.json";
     document.getElementById("editBtn").addEventListener("click", ()=>{
-      tasksJson.value = JSON.stringify(state.tasks, null, 2);
-      editor.showModal();
+      window.open("./tasks.json", "_blank", "noopener,noreferrer");
     });
 
-    document.getElementById("closeEditor").addEventListener("click", ()=>{
-      editor.close();
-    });
 
-    document.getElementById("resetDefaults").addEventListener("click", ()=>{
-      if(confirm("Reset tasks to defaults? (This won’t erase streaks, but today’s checkboxes may no longer match.)")){
-        state.tasks = deepCopy(DEFAULTS);
-        saveState();
-        tasksJson.value = JSON.stringify(state.tasks, null, 2);
-        render();
-      }
-    });
+    // document.getElementById("closeEditor").addEventListener("click", ()=>{
+    //   editor.close();
+    // });
 
-    document.getElementById("saveTasks").addEventListener("click", ()=>{
-      try{
-        const parsed = JSON.parse(tasksJson.value);
-        // basic validation
-        ["aria","darren"].forEach(k=>{
-          if(!parsed[k] || !Array.isArray(parsed[k].required) || !Array.isArray(parsed[k].bonus)){
-            throw new Error(`Missing sections for "${k}". Must have required[] and bonus[].`);
-          }
-        });
-        state.tasks = parsed;
-        saveState();
-        editor.close();
-        render();
-      }catch(e){
-        alert("Invalid JSON:\n" + e.message);
-      }
-    });
+    // document.getElementById("resetDefaults").addEventListener("click", ()=>{
+    //   if(confirm("Reset tasks to defaults? (This won’t erase streaks, but today’s checkboxes may no longer match.)")){
+    //     state.tasks = deepCopy(DEFAULTS);
+    //     saveState();
+    //     tasksJson.value = JSON.stringify(state.tasks, null, 2);
+    //     render();
+    //   }
+    // });
+
+    // document.getElementById("saveTasks").addEventListener("click", ()=>{
+    //   try{
+    //     const parsed = JSON.parse(tasksJson.value);
+    //     // basic validation
+    //     ["aria","darren"].forEach(k=>{
+    //       if(!parsed[k] || !Array.isArray(parsed[k].required) || !Array.isArray(parsed[k].bonus)){
+    //         throw new Error(`Missing sections for "${k}". Must have required[] and bonus[].`);
+    //       }
+    //     });
+    //     state.tasks = parsed;
+    //     saveState();
+    //     editor.close();
+    //     render();
+    //   }catch(e){
+    //     alert("Invalid JSON:\n" + e.message);
+    //   }
+    // });
 
     // periodic update (reset pill + date rollover)
     let lastDay = todayKey();
