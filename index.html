@@ -421,7 +421,7 @@
     </div>
   </div>
 
-  <!-- <dialog id="editor">
+  <dialog id="editor">
     <div class="modalHead">
       <h3>Edit tasks (JSON)</h3>
       <button class="danger" id="closeEditor">Close</button>
@@ -436,7 +436,7 @@
       <button class="ghost" id="resetDefaults">Reset to defaults</button>
       <button id="saveTasks">Save</button>
     </div>
-  </dialog> -->
+  </dialog>
 
   <script>
     // --------- Defaults (edit here once, or via UI) ----------
@@ -816,8 +816,8 @@
     });
 
     // Editor modal
-    const editor = document.getElementById("editor");
-    const tasksJson = document.getElementById("tasksJson");
+    // const editor = document.getElementById("editor");
+    // const tasksJson = document.getElementById("tasksJson");
 
     document.getElementById("editBtn").textContent = "Edit tasks.json";
     document.getElementById("editBtn").addEventListener("click", ()=>{
