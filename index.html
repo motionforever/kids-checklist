@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -421,7 +422,7 @@
     </div>
   </div>
 
-  <!-- <dialog id="editor">
+  <dialog id="editor">
     <div class="modalHead">
       <h3>Edit tasks (JSON)</h3>
       <button class="danger" id="closeEditor">Close</button>
@@ -436,7 +437,7 @@
       <button class="ghost" id="resetDefaults">Reset to defaults</button>
       <button id="saveTasks">Save</button>
     </div>
-  </dialog> -->
+  </dialog>
 
   <script>
     // --------- Defaults (edit here once, or via UI) ----------
@@ -692,17 +693,18 @@
       const bonus = document.getElementById("bonusList");
       req.innerHTML = "";
       bonus.innerHTML = "";
+      
+      const tasks = getViewTasks(activeKid);
+      // const base = state.tasks[activeKid];
 
-      const base = state.tasks[activeKid];
+      // const weekdayKeys = ["sun","mon","tue","wed","thu","fri","sat"];
+      // const dow = weekdayKeys[new Date().getDay()];
+      // const add = (base.weekly && base.weekly[dow]) ? base.weekly[dow] : { required: [], bonus: [] };
 
-      const weekdayKeys = ["sun","mon","tue","wed","thu","fri","sat"];
-      const dow = weekdayKeys[new Date().getDay()];
-      const add = (base.weekly && base.weekly[dow]) ? base.weekly[dow] : { required: [], bonus: [] };
-
-      const tasks = {
-        required: [...(base.required || []), ...(add.required || [])],
-        bonus:    [...(base.bonus || []),    ...(add.bonus || [])]
-      };
+      // const tasks = {
+      //   required: [...(base.required || []), ...(add.required || [])],
+      //   bonus:    [...(base.bonus || []),    ...(add.bonus || [])]
+      // };
 
       tasks.required.forEach((t)=> req.appendChild(taskRow(activeKid, "required", t)));
       tasks.bonus.forEach((t)=> bonus.appendChild(taskRow(activeKid, "bonus", t)));
@@ -816,13 +818,14 @@
     });
 
     // Editor modal
-    const editor = document.getElementById("editor");
-    const tasksJson = document.getElementById("tasksJson");
+    // const editor = document.getElementById("editor");
+     // const tasksJson = document.getElementById("tasksJson");
 
-    document.getElementById("editBtn").textContent = "Edit tasks.json";
-    document.getElementById("editBtn").addEventListener("click", ()=>{
-      window.open("./tasks.json", "_blank", "noopener,noreferrer");
-    });
+    // document.getElementById("editBtn").addEventListener("click", ()=>{
+    //   tasksJson.value = JSON.stringify(state.tasks, null, 2);
+    //   editor.showModal();
+    // });
+    document.getElementById("editBtn").style.display = "none";
 
 
     // document.getElementById("closeEditor").addEventListener("click", ()=>{
