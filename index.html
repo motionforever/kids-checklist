@@ -474,7 +474,7 @@
 
     // --------- State ----------
     let state = null;
-
+    
     (async function init(){
       const saved = loadState();
       const tasks = await loadTasksFromJson();
@@ -487,12 +487,13 @@
         darren: { current: 0, best: 0, lastCountedDay: null }
       };
     
+      activeKid = state.activeKid;  
+    
       ensureTodayInitialized();
       render();
     })();
-
     
-    let activeKid = state.activeKid || "aria";
+    // let activeKid = "aria";
 
     // --------- Helpers ----------
     function todayKey() {
@@ -872,9 +873,6 @@
       render();
     }, 30 * 1000);
 
-    // init
-    ensureTodayInitialized();
-    render();
   </script>
 </body>
 </html>
