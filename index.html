@@ -825,7 +825,7 @@
     //   tasksJson.value = JSON.stringify(state.tasks, null, 2);
     //   editor.showModal();
     // });
-    document.getElementById("editBtn").style.display = "none";
+    // document.getElementById("editBtn").style.display = "none";
 
 
     // document.getElementById("closeEditor").addEventListener("click", ()=>{
@@ -862,15 +862,15 @@
     // periodic update (reset pill + date rollover)
     let lastDay = todayKey();
     setInterval(()=>{
+      if (!state) return;
       const nowDay = todayKey();
       if(nowDay !== lastDay){
         lastDay = nowDay;
-        // new day: initialize and render
         ensureTodayInitialized();
       }
-      // update countdown text + render stats
       render();
     }, 30 * 1000);
+
 
   </script>
 </body>
