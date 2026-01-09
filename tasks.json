@@ -1,0 +1,146 @@
+<!doctype json>
+{
+  "aria": {
+    "required": [
+      {
+        "name": "Chinese",
+        "note": "15–20 minutes",
+        "time": ""
+      },
+      {
+        "name": "Math practice",
+        "note": "20 minutes",
+        "time": ""
+      },
+      {
+        "name": "Homework / review",
+        "note": "Finish & pack",
+        "time": ""
+      },
+      {
+        "name": "Read",
+        "note": "15–20 minutes",
+        "time": ""
+      },
+      {
+        "name": "Piano practice",
+        "note": "30 minutes",
+        "time": ""
+      }
+    ],
+    "bonus": [
+      {
+        "name": "Tidy room",
+        "note": "5-minute reset",
+        "time": ""
+      },
+      {
+        "name": "Exercise",
+        "note": "10–20 minutes",
+        "time": ""
+      },
+      {
+        "name": "Kindness mission",
+        "note": "Do 1 helpful thing",
+        "time": ""
+      }
+    ],
+    "weekly": {
+      "mon": {
+        "required": [
+          { "name": "Chinese School", "note": "", "time": "3:30pm" },
+          { "name": "CAPA Ballet", "note": "", "time": "5:55pm" }
+        ],
+        "bonus": []
+      },
+      "wed": {
+        "required": [
+          { "name": "Vocal", "note": "", "time": "3:30pm" }
+        ],
+        "bonus": []
+      },
+      "thu": {
+        "required": [
+          { "name": "Piano lesson", "note": "", "time": "3:30pm" },
+          { "name": "Hip Hop", "note": "", "time": "5:50pm" }
+        ],
+        "bonus": []
+      }
+    }
+  },
+  "darren": {
+    "required": [
+      {
+        "name": "Math practice",
+        "note": "30+ minutes",
+        "time": ""
+      },
+      {
+        "name": "Chinese",
+        "note": "30+ minutes",
+        "time": ""
+      },
+      {
+        "name": "Homework / school prep",
+        "note": "Finish & pack",
+        "time": ""
+      },
+      {
+        "name": "Trumpet+Drums",
+        "note": "50 minutes",
+        "time": ""
+      },
+      {
+        "name": "Read",
+        "note": "20+ minutes",
+        "time": ""
+      }
+    ],
+    "bonus": [
+      {
+        "name": "Exercise",
+        "note": "Basketball / walk / stretch",
+        "time": ""
+      },
+      {
+        "name": "Tidy desk",
+        "note": "5-minute reset",
+        "time": ""
+      },
+      {
+        "name": "Plan tomorrow",
+        "note": "Top 3 tasks",
+        "time": ""
+      }
+    ]
+    "weekly": {
+      "mon": {
+        "required": [
+          { "name": "Trumpet", "note": "", "time": "3:45pm" }
+        ],
+        "bonus": []
+      },
+      "tue": {
+        "required": [
+          { "name": "Bilin Chinese lesson", "note": "", "time": "4:00pm" },
+          { "name": "Math Logic lesson", "note": "", "time": "6:00pm" }
+        ],
+        "bonus": []
+      },
+      "wed": {
+        "required": [
+          { "name": "Trumpet lesson", "note": "", "time": "3:40pm" },
+          { "name": "Drum lesson", "note": "", "time": "6:00pm" }
+        ],
+        "bonus": []
+      },
+      "thu": {
+        "required": [
+          { "name": "Math Logic lesson", "note": "", "time": "6:00pm" },
+          { "name": "Little Master lesson", "note": "", "time": "7:30pm" }
+        ],
+        "bonus": []
+      }
+    }    
+  }
+}
