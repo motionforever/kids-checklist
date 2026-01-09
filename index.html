@@ -589,15 +589,15 @@
       return d.toLocaleDateString(undefined, opts);
     }
 
-    function computeStats(kid){
-      const tasks = state.tasks[kid];
-      const reqTotal = tasks.required.length;
-      const bonusTotal = tasks.bonus.length;
+    function computeStats(kid, tasks){
+      const reqTotal = (tasks.required || []).length;
+      const bonusTotal = (tasks.bonus || []).length;
+
       let reqDone = 0;
       let bonusDone = 0;
 
-      tasks.required.forEach((_, i)=>{ if(isChecked(kid,"required",i)) reqDone++; });
-      tasks.bonus.forEach((_, i)=>{ if(isChecked(kid,"bonus",i)) bonusDone++; });
+      (tasks.required || []).forEach((t)=>{ if(isChecked(kid,"required",t)) reqDone++; });
+      (tasks.bonus || []).forEach((t)=>{ if(isChecked(kid,"bonus",t)) bonusDone++; });
 
       const allDone = reqDone + bonusDone;
       const allTotal = reqTotal + bonusTotal;
@@ -605,6 +605,7 @@
 
       return { reqDone, reqTotal, bonusDone, bonusTotal, allDone, allTotal, pct };
     }
+
 
     function maybeUpdateStreakOnFullRequired(kid){
       const t = todayKey();
