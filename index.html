@@ -443,7 +443,6 @@
     const DEFAULTS = {
       aria: {
         required: [
-          { name: "Brush teeth (AM + PM)", note: "2 minutes", time: "AM/PM" },
           { name: "Read", note: "15–20 minutes", time: "" },
           { name: "Homework / review", note: "Finish & pack", time: "" },
           { name: "Piano practice", note: "20 minutes", time: "" }
@@ -555,16 +554,6 @@
       return state.daily[t][kid].checks;
     }
 
-    // function setChecked(kid, section, idx, checked){
-    //   const checks = getChecksForToday(kid);
-    //   checks[taskId(kid, section, idx)] = !!checked;
-    //   saveState();
-    // }
-
-    // function isChecked(kid, section, idx){
-    //   const checks = getChecksForToday(kid);
-    //   return !!checks[taskId(kid, section, idx)];
-    // }
     function setChecked(kid, section, task, checked){
       const checks = getChecksForToday(kid);
       checks[taskId(kid, section, task)] = !!checked;
@@ -605,11 +594,26 @@
 
       return { reqDone, reqTotal, bonusDone, bonusTotal, allDone, allTotal, pct };
     }
-
+    function getViewTasks(kid){
+      const base = state.tasks[kid] || { required: [], bonus: [] };
+    
+      const weekdayKeys = ["sun","mon","tue","wed","thu","fri","sat"];
+      const dow = weekdayKeys[new Date().getDay()];
+    
+      const add = (base.weekly && base.weekly[dow])
+        ? base.weekly[dow]
+        : { required: [], bonus: [] };
+    
+      return {
+        required: [...(base.required || []), ...(add.required || [])],
+        bonus:    [...(base.bonus || []),    ...(add.bonus || [])]
+      };
+    }
 
     function maybeUpdateStreakOnFullRequired(kid){
       const t = todayKey();
-      const { reqDone, reqTotal } = computeStats(kid);
+      const { reqDone, reqTotal } = computeStats(kid, getViewTasks ? getViewTasks(kid) : state.tasks[kid]);
+
       const s = state.streaks[kid];
 
       // If no required tasks, streak doesn't really mean anything; treat as not countable.
@@ -672,15 +676,10 @@
       tasks.required.forEach((t)=> req.appendChild(taskRow(activeKid, "required", t)));
       tasks.bonus.forEach((t)=> bonus.appendChild(taskRow(activeKid, "bonus", t)));
 
-      // tasks.required.forEach((t, i)=>{
-      //   req.appendChild(taskRow(activeKid, "required", i, t));
-      // });
-      // tasks.bonus.forEach((t, i)=>{
-      //   bonus.appendChild(taskRow(activeKid, "bonus", i, t));
-      // });
-
       // stats
-      const st = computeStats(activeKid);
+      
+      const st = computeStats(activeKid, tasks);
+
       document.getElementById("reqDone").textContent = `${st.reqDone} / ${st.reqTotal}`;
       document.getElementById("allDone").textContent = `${st.allDone} / ${st.allTotal}`;
       document.getElementById("progressPct").textContent = `${st.pct}%`;
