@@ -472,25 +472,7 @@
     const KEY = "kidsChecklist.v1";
 
     // --------- State ----------
-    let state = null;
-
-    (async function init(){
-      const saved = loadState();
-      const tasks = await loadTasksFromJson();
-      state = saved || {};
-      state.tasks = tasks;
-      state.activeKid ||= "aria";
-      state.daily ||= {};
-      state.streaks ||= {
-        aria: { current: 0, best: 0, lastCountedDay: null },
-        darren: { current: 0, best: 0, lastCountedDay: null }
-      };
-    
-      ensureTodayInitialized();
-      render();
-    })();
-
-    
+    let state = loadState();
     let activeKid = state.activeKid || "aria";
 
     // --------- Helpers ----------
@@ -515,25 +497,13 @@
     }
 
     function deepCopy(x){ return JSON.parse(JSON.stringify(x)); }
-    
-    async function loadTasksFromJson(){
-      try {
-        const res = await fetch("./tasks.json", { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to load tasks.json");
-        const data = await res.json();
-        return data;
-      } catch (e) {
-        console.warn("Using DEFAULTS due to error:", e);
-        return deepCopy(DEFAULTS);
-      }
-    }
 
     function loadState(){
       try{
         const raw = localStorage.getItem(KEY);
-        if (!raw) {
+        if(!raw){
           return {
-            // tasks will be injected later from tasks.json
+            tasks: deepCopy(DEFAULTS),
             activeKid: "aria",
             daily: {},
             streaks: {
@@ -542,7 +512,6 @@
             }
           };
         }
-
         const parsed = JSON.parse(raw);
         // minimal migration safety
         parsed.tasks ||= deepCopy(DEFAULTS);
