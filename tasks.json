@@ -47,20 +47,19 @@
     "weekly": {
       "mon": {
         "required": [
-          { "name": "MLP Chinese School", "note": "", "time": "3:30pm" },
           { "name": "Violin", "note": "", "time": "6:15pm" }
         ],
         "bonus": []
       },
       "tus": {
         "required": [
-          { "name": "Chinese School", "note": "", "time": "3:30pm" }
+          { "name": "MLP Chinese School", "note": "", "time": "3:30pm" }
         ],
         "bonus": []
       },      
       "wed": {
         "required": [
-          { "name": "Vocal", "note": "", "time": "3:30pm" }
+          { "name": "Math", "note": "", "time": "3:30pm" }
         ],
         "bonus": []
       },
@@ -71,6 +70,13 @@
         ],
         "bonus": []
       }
+      "fri": {
+        "required": [
+          { "name": "Tap and Jazz at JiM", "note": "", "time": "4:30pm" }
+        ],
+        "bonus": []
+      },      
+      
     }
   },
   "darren": {
