@@ -76,7 +76,6 @@
         ],
         "bonus": []
       },      
-      
     }
   },
   "darren": {
@@ -125,17 +124,18 @@
       }
     ],
     "weekly": {
-      "tue": {
+      "mon": {
         "required": [
           { "name": "Trumpet", "note": "", "time": "3:45pm" },
-          { "boy scout": "Trumpet", "note": "", "time": "7:30pm" }
+          { "name": "Math Logic lesson", "note": "", "time": "6:00pm" }          
+
         ],
         "bonus": []
       },
-      "mon": {
+      "tus": {
         "required": [
           { "name": "Bilin Chinese lesson", "note": "", "time": "4:00pm" },
-          { "name": "Math Logic lesson", "note": "", "time": "6:00pm" }
+          { "name": "Boy Scout", "note": "", "time": "7:30pm" }
         ],
         "bonus": []
       },
@@ -151,6 +151,6 @@
         ],
         "bonus": []
       }
-    }    
+    }
   }
 }
