@@ -7,12 +7,12 @@
         "time": ""
       },
       {
-        "name": "Math practice",
+        "name": "Afficient",
         "note": "20 minutes",
         "time": ""
       },
       {
-        "name": "Homework / review",
+        "name": "Homework / Review",
         "note": "Finish & pack",
         "time": ""
       },
@@ -22,10 +22,10 @@
         "time": ""
       },
       {
-        "name": "Piano practice",
+        "name": "Violin practice",
         "note": "30 minutes",
         "time": ""
-      }
+      }   
     ],
     "bonus": [
       {
@@ -47,11 +47,17 @@
     "weekly": {
       "mon": {
         "required": [
-          { "name": "Chinese School", "note": "", "time": "3:30pm" },
-          { "name": "CAPA Ballet", "note": "", "time": "5:55pm" }
+          { "name": "MLP Chinese School", "note": "", "time": "3:30pm" },
+          { "name": "Violin", "note": "", "time": "6:15pm" }
         ],
         "bonus": []
       },
+      "tus": {
+        "required": [
+          { "name": "Chinese School", "note": "", "time": "3:30pm" }
+        ],
+        "bonus": []
+      },      
       "wed": {
         "required": [
           { "name": "Vocal", "note": "", "time": "3:30pm" }
@@ -61,7 +67,7 @@
       "thu": {
         "required": [
           { "name": "Piano lesson", "note": "", "time": "3:30pm" },
-          { "name": "Hip Hop", "note": "", "time": "5:50pm" }
+          { "name": "Hip Hop", "note": "", "time": "6:00pm" }
         ],
         "bonus": []
       }
@@ -85,7 +91,7 @@
         "time": ""
       },
       {
-        "name": "Trumpet+Drums",
+        "name": "Trumpet",
         "note": "50 minutes",
         "time": ""
       },
@@ -113,13 +119,14 @@
       }
     ],
     "weekly": {
-      "mon": {
+      "tue": {
         "required": [
-          { "name": "Trumpet", "note": "", "time": "3:45pm" }
+          { "name": "Trumpet", "note": "", "time": "3:45pm" },
+          { "boy scout": "Trumpet", "note": "", "time": "7:30pm" }
         ],
         "bonus": []
       },
-      "tue": {
+      "mon": {
         "required": [
           { "name": "Bilin Chinese lesson", "note": "", "time": "4:00pm" },
           { "name": "Math Logic lesson", "note": "", "time": "6:00pm" }
@@ -128,14 +135,12 @@
       },
       "wed": {
         "required": [
-          { "name": "Trumpet lesson", "note": "", "time": "3:40pm" },
-          { "name": "Drum lesson", "note": "", "time": "6:00pm" }
+          { "name": "Trumpet lesson", "note": "", "time": "3:40pm" }
         ],
         "bonus": []
       },
       "thu": {
         "required": [
-          { "name": "Math Logic lesson", "note": "", "time": "6:00pm" },
           { "name": "Little Master lesson", "note": "", "time": "7:30pm" }
         ],
         "bonus": []
