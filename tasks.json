@@ -69,13 +69,13 @@
           { "name": "Hip Hop", "note": "", "time": "6:00pm" }
         ],
         "bonus": []
-      }
+      },
       "fri": {
         "required": [
           { "name": "Tap and Jazz at JiM", "note": "", "time": "4:30pm" }
         ],
         "bonus": []
-      },      
+      }      
     }
   },
   "darren": {
