@@ -17,6 +17,11 @@
         "time": ""
       },
       {
+        "name": "Meditation",
+        "note": "5 minutes",
+        "time": ""
+      },      
+      {
         "name": "Read",
         "note": "15–20 minutes",
         "time": ""
@@ -29,8 +34,8 @@
     ],
     "bonus": [
       {
-        "name": "Tidy room",
-        "note": "5-minute reset",
+        "name": "Art",
+        "note": "free style",
         "time": ""
       },
       {
@@ -95,6 +100,11 @@
         "note": "Finish & pack",
         "time": ""
       },
+      {
+        "name": "Meditation",
+        "note": "5 minutes",
+        "time": ""
+      },           
       {
         "name": "Trumpet",
         "note": "50 minutes",
