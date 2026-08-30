@@ -30,7 +30,12 @@
         "name": "Violin practice",
         "note": "30 minutes",
         "time": ""
-      }   
+      },
+      {
+        "name": "Piano practice",
+        "note": "30 minutes",
+        "time": ""
+      }  
     ],
     "bonus": [
       {
